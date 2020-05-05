@@ -22,7 +22,7 @@
 |Encoder + Classifier\ Dataset| Invoice |
 |:--------|:--:|
 |[Baseline (BoW + SVM)](#bowsvm)| 0.6 |
-| (Word2Vec + SVM)| - |
+| [Word2Vec + SVM](#w2vsvm)| 0.85 |
 | (FastText + SVM)| - |
 | [BERT + SVM](#bertsvm)| 0.87 |
 
@@ -68,6 +68,30 @@ Here are the accuracy report and the confusion matrix for this configuration.
 - The classification rate is not good at all with this configuration (0.6)
 - Only date is well recognized based on the mechasism of BoW (the existence of date characters as special symbols)
 - It totally fails to catch the quantity and type classes, which could only recognize as the number or characters
+
+####  <a name="w2vsvm"> Word2Vec + SVM </a>
+
+|ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
+|:--|:-:|:-:|:-:|:-:|
+|       |0.79   |0.86   |0.83   |2775   |
+|amount |0.65   |0.55   |0.60   |961    |
+|date   |0.99   |0.89   |0.94   |734    |
+|name   |0.94   |0.98   |0.96   |2154   |
+|quantity|0.84  |0.66   |0.74   |299    |
+|type   |1.00   |0.90   |0.95   |397    |
+|accuracy|      |       |0.85   |7320   |
+|macro avg|0.87 |0.81   |0.83   |7320   |
+|weighted avg|0.85|0.85 |0.85   |7320   |
+
+|CONFUSION MATRIX|OTHER|amount|date|name|quantity|type|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|
+|OTHER  |2400| 277 |   1 |   67|   30 |  0 |
+|amount |426 | 527 |   0 |    5|   3  |  0 |
+|date   |69  |  0  | 652 |   10|   3  |  0 |
+|name   |40  |  0  |   5 | 2109|   0  |  0 |
+|quantity|88 |  6  |  1  |    8|  196 |  0 |
+|type   |0   |  0  |    0|   38|    0 | 359|
+
 
 #### <a name="bertsvm"> BERT + SVM </a>
 |ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|

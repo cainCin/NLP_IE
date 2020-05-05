@@ -3,7 +3,7 @@ from data.invoice_dataset import TextDataset
 from time import time
 
 
-_ENCODER = "bert"
+_ENCODER = "w2v"
 _CLASSIFIER = "SVM"
 
 if "BoW".lower() in _ENCODER.lower():
@@ -12,6 +12,9 @@ if "BoW".lower() in _ENCODER.lower():
 elif "bert" in _ENCODER.lower():
     from encoders.BERTEncoder import BERTEncoder
     ENC = BERTEncoder()
+elif "w2v".lower() in _ENCODER.lower():
+    from encoders.Word2VecEncoder import W2VEncoder
+    ENC = W2VEncoder()
 
 if "svm" in _CLASSIFIER.lower():
     from classifiers.SVM import CLASSIFIER
