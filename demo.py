@@ -29,19 +29,30 @@ def target_transform(label, category=category):
     return ""
 
 
-labels_path = r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\train\labels"
-trainset = TextDataset(labels_path, category, target_transform=target_transform)
+train_labels_path = r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\train\labels"
+test_labels_path = r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\test\labels"
+trainset = TextDataset(train_labels_path, category=None, target_transform=target_transform)
+testset = TextDataset(test_labels_path, category=None, target_transform=target_transform)
 print(trainset.category)
-out = encoding(trainset)
+train_enc = encoding(trainset)
 
-from sklearn.model_selection import train_test_split
-# Split to data and label
-X = out.drop('Class', axis=1)
-y = out['Class']
+if testset is None:
+    from sklearn.model_selection import train_test_split
+    # Split to data and label
+    X = train_enc.drop('Class', axis=1)
+    y = train_enc['Class']
 
-print(X.shape)
-# Split train - test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
+    print(X.shape)
+    # Split train - test
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
+else:
+    X_train = train_enc.drop('Class', axis=1)
+    y_train = train_enc['Class']
+
+    test_enc = encoding(testset)
+    X_test = test_enc.drop('Class', axis=1)
+    y_test = test_enc['Class']
+
 
 # FITTING
 CLF = CLASSIFIER()
