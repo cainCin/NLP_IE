@@ -16,6 +16,10 @@ elif "w2v".lower() in _ENCODER.lower():
     from encoders.Word2VecEncoder import W2VEncoder
     ENC = W2VEncoder()
 
+elif "ft".lower() in _ENCODER.lower():
+    from encoders.FastTextEncoder import FTEncoder
+    ENC = FTEncoder()
+
 if "svm" in _CLASSIFIER.lower():
     from classifiers.SVM import CLASSIFIER
     CLF = CLASSIFIER()
@@ -24,11 +28,13 @@ def encoding(data):
     return ENC.process(data)
 
 
-category = ["name", "date", "type", "quantity", "amount"]
+category = ["name", "date", "type", "quantity", "amount", "tel", "zipcode", "address", "unit", "number"]
 def target_transform(label, category=category):
     for cat in category:
         if cat in label:
             return cat
+    if "tax" in label:
+        return "amount"
     return ""
 
 
@@ -60,9 +66,15 @@ else:
 # FITTING
 CLF = CLASSIFIER()
 CLF.fit(X_train, y_train)
+
+# PREDICTION
 s = time()
 y_pred = CLF.predict(X_test)
 print(f"Elapsed {time()-s} s")
+
+# STORING MODEL
+filename = _ENCODER + _CLASSIFIER + '.sav'
+CLF.save(filename)
 
 # METRICS
 from sklearn.metrics import classification_report, confusion_matrix

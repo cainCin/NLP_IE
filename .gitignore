@@ -134,3 +134,4 @@ dmypy.json
 # weight
 *.bin
 *.pkl
+*.sav

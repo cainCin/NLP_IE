@@ -92,6 +92,28 @@ Here are the accuracy report and the confusion matrix for this configuration.
 |quantity|88 |  6  |  1  |    8|  196 |  0 |
 |type   |0   |  0  |    0|   38|    0 | 359|
 
+#### FastText + SVM
+|ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
+|:--|:-:|:-:|:-:|:-:|
+|OTHER|     0.79|      0.84|      0.82|      2775|
+|amount|    0.65|      0.55|      0.59|       961|
+|date|      0.99|      0.87|      0.93|       734|
+|name|      0.91|      0.98|      0.95|      2154|
+|quantity|  0.86|      0.68|      0.76|       299|
+|type|      1.00|      0.93|      0.96|       397|
+|accuracy|||                      0.85|      7320|
+|macro avg| 0.87|      0.81|      0.83|      7320|
+|weighted avg|0.84|    0.85|      0.84|      7320|
+
+|CONFUSION MATRIX|OTHER|amount|date|name|quantity|type|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|
+|OTHER      |2328|  277|    1|  140|   29|    0|
+|amount     | 422|  526|    1|    9|    3|    0|
+|date       |  70|    0|  641|   21|    2|    0|
+|name       |  31|    0|    3| 2120|    0|    0|
+|quantity   |  79|    6|    2|    8|  204|    0|
+|type       |   0|    0|    0|   27|    0|  370|
+
 
 #### <a name="bertsvm"> BERT + SVM </a>
 |ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
@@ -120,3 +142,17 @@ Here are the accuracy report and the confusion matrix for this configuration.
 - A great improvement with this configuration (87% acc)
 - Most of classes are satisfied (> 80% acc)
 - There is still a confusion between the amount with the unclassified. Actually, in this preliminary experiments, we extract only 5 common classes, and there is still some unconsidered classes with the same pattern (for ex. tax in the unclassified).
+
+#### VISUALIZATION
+
+|CONFIGURATION||
+|:-|:-:|
+|ENCODER| Word2Vec|
+|CLASSIFIER| SVM|
+|CLASS|-"name" <br> - "date" <br> - "type" <br> - "quantity" <br> - "amount" <br> - "tel" <br> - "zipcode" <br> - "address" <br> - "unit" <br> - "number"|
+
+<p>
+    <img src="demo.png" alt="【TIS様】Pitch Tokyo請求書 (Aniwo)_0"/>
+    <br>
+    <em>Fig. 1: Visualiztion of NLP approaches in Invoice data sample </em>
+</p>

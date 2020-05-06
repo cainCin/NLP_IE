@@ -1,4 +1,5 @@
 from sklearn.svm import SVC
+import pickle
 
 class CLASSIFIER:
     def __init__(self):
@@ -17,7 +18,13 @@ class CLASSIFIER:
         
     def predict(self, X):
         return self.model.predict(X)
+
+    def save(self, filename):
+        pickle.dump(self.model, open(filename, 'wb'))
     
+    def load(self, filename):
+        self.model = pickle.load(open(filename, 'rb'))
+
     def score(self, X):
         return self.model._predict_proba(X)
     
