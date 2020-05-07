@@ -49,36 +49,15 @@ SVM configuration:
 Here are the accuracy report and the confusion matrix for this configuration.
 |ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
 |:--|:-:|:-:|:-:|:-:|
-|OTHER|0.49|0.96|0.65|2775|
-|amount|0.69|0.26|0.38|961|
-|date|0.96|0.81|0.88|734|
-|name|0.99|0.41|0.58|2154|
-|quantity|0.83|0.03|0.06|299|
-|type|0.00|0.00|0.00|397|
-|accuracy|||0.60|7320|
-|macro avg|0.66|0.41|0.43|7320|
-|weighted avg|0.70|0.60|0.56|7320|
-
-|CONFUSION MATRIX|OTHER|amount|date|name|quantity|type|
-|:-|:-:|:-:|:-:|:-:|:-:|:-:|
-|OTHER|2665|100|1|9|0|0|
-|amount|707|254|0|0|0|0|
-|date|139|0|593|2|0|0|
-|name|1248|2|23|879|2|0|
-|quantity|277|12|0|0|10|0|
-|type|397|0|0|0|0|0|
-
-
-              precision    recall  f1-score   support
-     address       0.71      0.72      0.71       185
-      amount       1.00      0.43      0.60      2166
-        date       0.97      0.83      0.89       734
-        name       1.00      0.37      0.54      2154
-      number       0.93      0.24      0.38      1110
-
-    accuracy                           0.51      7320
-   macro avg       0.80      0.60      0.58      7320
-weighted avg       0.87      0.51      0.55      7320
+|     UNKNOWN|       0.22|      1.00|      0.36|       971|
+|     address|       0.71|      0.72|      0.71|       185|
+|      amount|       1.00|      0.43|      0.60|      2166|
+|        date|       0.97|      0.83|      0.89|       734|
+|        name|       1.00|      0.37|      0.54|      2154|
+|      number|       0.93|      0.24|      0.38|      1110|
+|    accuracy|||                           0.51|      7320|
+|   macro avg|       0.80|      0.60|      0.58|      7320|
+|weighted avg|       0.87|      0.51|      0.55|      7320|
 
 [[ 967    0    0    0    0    4]
  [  51  134    0    0    0    0]
