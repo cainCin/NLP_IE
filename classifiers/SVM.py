@@ -9,8 +9,8 @@ class CLASSIFIER:
     def load_default_classifier(self):
         self.load_svm()
         
-    def load_svm(self, kernel='poly', degree=8):
-        self.model = SVC(kernel=kernel, degree=degree)
+    def load_svm(self, kernel='poly', degree=8, class_weight='balanced'):
+        self.model = SVC(kernel=kernel, class_weight=class_weight, degree=degree)
         
     def fit(self, X_train, y_train):
         self.model.probability = True

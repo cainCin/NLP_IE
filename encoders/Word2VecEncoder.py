@@ -20,7 +20,10 @@ class W2VEncoder:
                 X.append(self.wiki2vec.get_word_vector(c.lower()))
             except:
                 continue
-        X = list(self.compress(X))
+        if len(X) > 0:
+            X = list(self.compress(X))
+        else:
+            X = None
         return X
 
     def export_pd(self, X):
@@ -34,6 +37,8 @@ class W2VEncoder:
 
 
         X = [self.encode(t) for t in text]
+        category = [c for item, c in zip(X, category) if item is not None]
+        X = [item for item in X if item is not None]
         X = self.export_pd(X)
         X["Class"] = category
         return X

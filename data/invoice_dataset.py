@@ -7,7 +7,7 @@ import torch
 class TextDataset(Dataset):
     """Text dataset from json"""
 
-    def __init__(self, labels_path, category=None, transform=None, target_transform=None):
+    def __init__(self, labels_path, category=None, transform=None, target_transform=None, only=["key", "value"]):
         """
         Args:
             csv_file (string): Path to the csv file with annotations.
@@ -16,6 +16,7 @@ class TextDataset(Dataset):
                 on a sample.
         """
         
+        self.only = only
         self.data, self.category = self.load_data(labels_path, category)
         
         self.transform = transform
@@ -27,8 +28,22 @@ class TextDataset(Dataset):
         for label_path in list_label:
             #print(f"Processing {label_path}")
             CASIA_output = load_json(label_path)
-            item = [(item.get("text"), item.get("type")) for item in CASIA_output \
-                    if item.get("type") not in ["", None, "None"] and item.get('key_type') in "value"]
+            if self.only is not None:
+                # fetch value only
+                item = [(item.get("text"), item.get("type")) for item in CASIA_output \
+                        if item.get("type") not in ["", None, "None"] and item.get('key_type') in self.only]
+            else:
+                # fetch full data
+                item = []
+                for item_ in CASIA_output:
+                    if len(item_.get('text')) == 0: continue
+                    if item_.get('key_type').lower() in ['key']:
+                        item.append((item_.get('text'), "key_" + item_.get('type')))
+                    elif item_.get('key_type').lower() in ['value']:
+                        item.append((item_.get('text'), item_.get('type')))
+                    else:
+                        item.append((item_.get('text'), ''))
+            #item = [(item.get("text"), item.get("type")) for item in CASIA_output if len(item.get("text")) > 0]
             if category:
                 out = []
                 for element in item:

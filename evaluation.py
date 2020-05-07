@@ -3,9 +3,10 @@ from data.invoice_dataset import TextDataset
 from time import time
 from sklearn.model_selection import train_test_split
 
-
-_ENCODER = "w2v"
+script = "EVAL_"
+_ENCODER = "bow"
 _CLASSIFIER = "SVM"
+REDUCE_UNKNOWN = False
 
 if "BoW".lower() in _ENCODER.lower():
     from encoders.BoWEncoder import BoWEncoder
@@ -29,15 +30,15 @@ def encoding(data):
     return ENC.process(data)
 
 
-category = ["key", "name", "date", "type", "number", "amount", "tel", "zipcode", "address", "unit"]
+category = ["name", "date", "number", "amount", "address"]
 def target_transform(label, category=category):
     for cat in category:
         if cat in label:
             return cat
     if "tax" in label:
         return "amount"
-    if "fax" in label:
-        return "tel"
+    #if "fax" in label:
+    #    return "tel"
     if "quantity" in label:
         return "number"
     return ""
@@ -45,21 +46,25 @@ def target_transform(label, category=category):
 
 train_labels_path = r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\train\labels"
 test_labels_path = r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\test\labels"
-trainset = TextDataset(train_labels_path, category=None, target_transform=target_transform)
-testset = TextDataset(test_labels_path, category=None, target_transform=target_transform)
+trainset = TextDataset(train_labels_path, category=None, target_transform=target_transform, only=["value"])
+testset = TextDataset(test_labels_path, category=None, target_transform=target_transform, only=["value"])
 print(trainset.category)
 print(len(trainset))
 
 print("ENCODING===================")
-import random
-trainset_filt = []
-for item in trainset:
-    if item[1] == '' and random.uniform(0, 1) > 0.2:
-        continue
-    
-    trainset_filt.append(item)
+# Reduce the number of unknown data
+if REDUCE_UNKNOWN:
+    import random
+    trainset_filt = []
+    for item in trainset:
+        if item[1] == '' and random.uniform(0, 1) > 0.2:
+            continue
+        
+        trainset_filt.append(item)
 
-print("LEN TRAIN FILT:", len(trainset_filt))
+    print("LEN TRAIN FILT:", len(trainset_filt))
+else:
+    trainset_filt = trainset
 
 train_enc = encoding(trainset_filt)
 
@@ -92,7 +97,7 @@ y_pred = CLF.predict(X_test)
 print(f"Elapsed {time()-s} s")
 
 # STORING MODEL
-filename = _ENCODER + _CLASSIFIER + '.sav'
+filename = script + _ENCODER + _CLASSIFIER + '.sav'
 CLF.save(filename)
 
 # METRICS
