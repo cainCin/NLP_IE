@@ -19,12 +19,12 @@
 |Classifier| SVM, CNN|
 
 ## <a name="benchmark"> Benchmark </a>
-|Encoder + Classifier\ Dataset| Invoice |
-|:--------|:--:|
-|[Baseline (BoW + SVM)](#bowsvm)| 0.6 |
-| [Word2Vec + SVM](#w2vsvm)| 0.93 |
-| [FastText + SVM](#ftsvm)| 0.94 |
-| [BERT + SVM](#bertsvm)| 0.95 |
+|Encoder + Classifier\ Infos | Invoice |Embedding size|Speed|
+|:--------|:--:|:-:|:-:|
+|[Baseline (BoW + SVM)](#bowsvm)| [0.51](#bowsvm_acc) |476||
+| [Word2Vec + SVM](#w2vsvm)| [0.93](#w2vsvm_acc) |100||
+| [FastText + SVM](#ftsvm)| [0.94](#ftsvm_acc) |300||
+| [BERT + SVM](#bertsvm)| [0.95](#bertsvm_acc) |768||
 
 
 # EXPERIMENTS
@@ -55,16 +55,18 @@ Here are the accuracy report and the confusion matrix for this configuration.
 |        date|       0.97|      0.83|      0.89|       734|
 |        name|       1.00|      0.37|      0.54|      2154|
 |      number|       0.93|      0.24|      0.38|      1110|
-|    accuracy|||                           0.51|      7320|
+|    accuracy|||  <a name="bowsvm_acc">0.51</a>|      7320|
 |   macro avg|       0.80|      0.60|      0.58|      7320|
 |weighted avg|       0.87|      0.51|      0.55|      7320|
 
-[[ 967    0    0    0    0    4]
- [  51  134    0    0    0    0]
- [1221    0  939    0    0    6]
- [ 125    0    0  607    2    0]
- [1266   56    1   21  799   11]
- [ 839    0    1    0    2  268]]
+|CONFUSION MATRIX|UNKNOWN|address|amount|date|name|number|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|
+|UNKNOWN    | 967|    0|    0|    0|    0|    4|
+|address    |  51|  134|    0|    0|    0|    0|
+|amount     |1221|    0|  939|    0|    0|    6|
+|date       | 125|    0|    0|  607|    2|    0|
+|name       |1266|   56|    1|   21|  799|   11|
+|number     | 839|    0|    1|    0|    2|  268|
 
 -------
 #### Discussion:
@@ -82,7 +84,7 @@ Here are the accuracy report and the confusion matrix for this configuration.
 |date|          0.98|      0.89|      0.93|       734|
 |name|          0.98|      0.96|      0.97|      2154|
 |number|        0.77|      0.94|      0.85|      1110|
-|accuracy|||                          0.93|      7320|
+|accuracy||  <a name="w2vsvm_acc">0.93</a>|      7320|
 |macro avg|     0.90|      0.94|      0.91|      7320|
 |weighted avg|  0.94|      0.93|      0.93|      7320|
 
@@ -105,7 +107,7 @@ Here are the accuracy report and the confusion matrix for this configuration.
 |        date|       0.98|      0.88|      0.93|       734|
 |        name|       0.96|      0.98|      0.97|      2154|
 |      number|       0.78|      0.96|      0.86|      1110|
-|    accuracy|||                           0.94|      7320|
+|    accuracy|||   <a name="ftsvm_acc">0.94</a>|      7320|
 |   macro avg|       0.93|      0.93|      0.93|      7320|
 |weighted avg|       0.94|      0.94|      0.94|      7320|
 
@@ -128,7 +130,7 @@ Here are the accuracy report and the confusion matrix for this configuration.
 |        date|       1.00|      0.88|      0.94|       734|
 |        name|       0.97|      0.96|      0.96|      2154|
 |      number|       0.84|      0.94|      0.89|      1110|
-|    accuracy|||                           0.95|      7320|
+|    accuracy||| <a name="bertsvm_acc">0.95</a>|      7320|
 |   macro avg|       0.94|      0.94|      0.94|      7320|
 |weighted avg|       0.95|      0.95|      0.95|      7320|
 
