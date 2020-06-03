@@ -135,3 +135,7 @@ dmypy.json
 *.bin
 *.pkl
 *.sav
+*.pt
+
+# debug
+debug/

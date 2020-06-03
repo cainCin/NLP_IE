@@ -21,7 +21,8 @@ class W2VEncoder:
             except:
                 continue
         if len(X) > 0:
-            X = list(self.compress(X))
+            return X
+            # X = list(self.compress(X))
         else:
             X = None
         return X
@@ -37,6 +38,7 @@ class W2VEncoder:
 
 
         X = [self.encode(t) for t in text]
+        X = [list(self.compress(x)) for x in X]
         category = [c for item, c in zip(X, category) if item is not None]
         X = [item for item in X if item is not None]
         X = self.export_pd(X)
