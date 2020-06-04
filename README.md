@@ -21,7 +21,7 @@
 ## <a name="benchmark"> Benchmark </a>
 
 |Encoder + Classifier\ Infos | Embedding size| Invoice| Invoice - datapile|
-|:--------|:--:|:-:|:-:|:-:|:-:|
+|:--------|:--:|:-:|:-:|
 |[Baseline (BoW + SVM)](#bowsvm)|476| [0.51](#bowsvm_acc) |[0.60](#bowsvmdp_acc)|
 | [Word2Vec + SVM](#w2vsvm)|100| [0.93](#w2vsvm_acc) |[0.88](#w2vsvmdp_acc)|
 | [FastText + SVM](#ftsvm)|300| [0.94](#ftsvm_acc) |[0.84](#ftsvmdp_acc)|
@@ -421,13 +421,13 @@ weighted avg       0.90      0.88      0.88     10532
 |CLASS|-"name" <br> - "date" <br> - "type" <br> - "quantity" <br> - "amount" <br> - "tel" <br> - "zipcode" <br> - "address" <br> - "unit" <br> - "number"|
 
 <p>
-    <img src="fig/demo_invoice_1.png" alt="【TIS様】Pitch Tokyo請求書 (Aniwo)_0"/>
+    <img src="fig/invoice_sample_2.png" alt="【TIS様】Pitch Tokyo請求書 (Aniwo)_0"/>
     <br>
     <em>Fig. 1: Visualiztion of NLP approaches - simplfied category in Invoice data sample </em>
 </p>
 
 <p>
-    <img src="fig/demo_invoice_2.png" alt="【TIS様】Pitch Tokyo請求書 (Aniwo)_0"/>
+    <img src="fig/invoice_sample_2.png" alt="【TIS様】Pitch Tokyo請求書 (Aniwo)_0"/>
     <br>
     <em>Fig. 2: Visualiztion of NLP approaches - full category in Invoice data sample </em>
 </p>
