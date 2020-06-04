@@ -19,12 +19,12 @@
 |Classifier| SVM, CNN|
 
 ## <a name="benchmark"> Benchmark </a>
-|Encoder + Classifier\ Infos | Embedding size| Invoice <br> ACC - SPEED | Invoice - datapile <br> ACC - SPEED |
+|Encoder + Classifier\ Infos | Embedding size| Invoice| Invoice - datapile|
 |:--------|:--:|:-:|:-:|:-:|:-:|
 |[Baseline (BoW + SVM)](#bowsvm)|476| [0.51](#bowsvm_acc) |[0.60](#bowsvmdp_acc)|
-| [Word2Vec + SVM](#w2vsvm)|100| [0.93](#w2vsvm_acc) |[0.51](#w2vsvmdp_acc)|
-| [FastText + SVM](#ftsvm)|300| [0.94](#ftsvm_acc) |[0.51](#ftsvmdp_acc)|
-| [BERT + SVM](#bertsvm)|768| [0.95](#bertsvm_acc) |[0.51](#bertsvmdp_acc)|
+| [Word2Vec + SVM](#w2vsvm)|100| [0.93](#w2vsvm_acc) |[0.88](#w2vsvmdp_acc)|
+| [FastText + SVM](#ftsvm)|300| [0.94](#ftsvm_acc) |[0.84](#ftsvmdp_acc)|
+| [BERT + SVM](#bertsvm)|768| [0.95](#bertsvm_acc) |[0.91](#bertsvmdp_acc)|
 
 
 # EXPERIMENTS
@@ -274,20 +274,19 @@ TABLE: MAPPING FROM FORMAL KEYS INTO CATEGORIES
 |     zipcode|   0|    0|    0|    0|    0|    0|    4|   98|
 
 ### BERTSVM
-              precision    recall  f1-score   support
-
-                   0.91      0.85      0.88      2057
-     address       0.92      0.93      0.92       185
-company_name       0.83      0.92      0.87       360
-        date       1.00      0.88      0.94       734
- description       0.73      0.70      0.71       564
-      number       0.93      0.99      0.96      2912
-     tel_fax       0.98      0.99      0.98       407
-     zipcode       0.97      1.00      0.99       102
-
-    accuracy   <a name="bertsvmdp_acc">0.91</a>   0.91      7321
-   macro avg       0.91      0.91      0.91      7321
-weighted avg       0.91      0.91      0.91      7321
+|ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
+|:--|:-:|:-:|:-:|:-:|
+|UNKNOWN|            0.91|      0.85|      0.88|      2057|
+|     address|       0.92|      0.93|      0.92|       185|
+|company_name|       0.83|      0.92|      0.87|       360|
+|        date|       1.00|      0.88|      0.94|       734|
+| description|       0.73|      0.70|      0.71|       564|
+|      number|       0.93|      0.99|      0.96|      2912|
+|     tel_fax|       0.98|      0.99|      0.98|       407|
+|     zipcode|       0.97|      1.00|      0.99|       102|
+|    accuracy||| <a name="bertsvmdp_acc">0.91</a>|      7321|
+|   macro avg|       0.91|      0.91|      0.91|      7321|
+|weighted avg|       0.91|      0.91|      0.91|      7321|
 
 |CONFUSION MATRIX|UNKNOWN|address|company_name|date|description|number|tel_fax|zipcode|
 |:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -302,77 +301,82 @@ weighted avg       0.91      0.91      0.91      7321
 
 
 ### W2VCNN
- precision    recall  f1-score   support
+|ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
+|:--|:-:|:-:|:-:|:-:|
+|UNKNOWN|            0.87|      0.88|      0.88|      2057|
+|     address|       0.87|      0.90|      0.89|       185|
+|company_name|       0.84|      0.83|      0.83|       360|
+|        date|       0.99|      0.89|      0.93|       734|
+| description|       0.80|      0.77|      0.79|       564|
+|      number|       0.95|      0.97|      0.96|      2912|
+|     tel_fax|       0.98|      0.99|      0.99|       407|
+|     zipcode|       0.95|      0.99|      0.97|       102|
+|    accuracy|||<a name="w2vcnndp_acc">0.91</a>|      7321|
+|   macro avg|       0.91|      0.90|      0.90|      7321|
+|weighted avg|       0.91|      0.91|      0.91|      7321|
 
-                   0.87      0.88      0.88      2057
-     address       0.87      0.90      0.89       185
-company_name       0.84      0.83      0.83       360
-        date       0.99      0.89      0.93       734
- description       0.80      0.77      0.79       564
-      number       0.95      0.97      0.96      2912
-     tel_fax       0.98      0.99      0.99       407
-     zipcode       0.95      0.99      0.97       102
-
-    accuracy <a name="w2vcnndp_acc">0.91</a>  0.91      7321
-   macro avg       0.91      0.90      0.90      7321
-weighted avg       0.91      0.91      0.91      7321
-
-[[1808   12   48    0   67  113    5    4]
- [   3  167    1    1   12    0    1    0]
- [  47    4  298    0   11    0    0    0]
- [  48    0    0  651   10   25    0    0]
- [  88    9    8    3  436   18    1    1]
- [  76    0    0    5    7 2824    0    0]
- [   1    0    0    0    1    2  403    0]
- [   1    0    0    0    0    0    0  101]]
+|CONFUSION MATRIX|UNKNOWN|address|company_name|date|description|number|tel_fax|zipcode|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|     UNKNOWN|1808|   12|   48|    0|   67|  113|    5|    4|
+|     address|   3|  167|    1|    1|   12|    0|    1|    0|
+|company_name|  47|    4|  298|    0|   11|    0|    0|    0|
+|        date|  48|    0|    0|  651|   10|   25|    0|    0|
+| description|  88|    9|    8|    3|  436|   18|    1|    1|
+|      number|  76|    0|    0|    5|    7| 2824|    0|    0|
+|     tel_fax|   1|    0|    0|    0|    1|    2|  403|    0|
+|     zipcode|   1|    0|    0|    0|    0|    0|    0|  101|
 
 ### W2V CNN extend
-                   0.89      0.90      0.90      2057
-     address       0.84      0.90      0.87       185
-company_name       0.83      0.87      0.85       360
-        date       0.97      0.88      0.92       734
- description       0.80      0.78      0.79       564
-      number       0.97      0.97      0.97      2912
-     tel_fax       0.99      1.00      0.99       407
-     zipcode       0.96      1.00      0.98       102
+|ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
+|:--|:-:|:-:|:-:|:-:|
+|UNKNOWN|            0.89|      0.90|      0.90|      2057|
+|     address|       0.84|      0.90|      0.87|       185|
+|company_name|       0.83|      0.87|      0.85|       360|
+|        date|       0.97|      0.88|      0.92|       734|
+| description|       0.80|      0.78|      0.79|       564|
+|      number|       0.97|      0.97|      0.97|      2912|
+|     tel_fax|       0.99|      1.00|      0.99|       407|
+|     zipcode|       0.96|      1.00|      0.98|       102|
+|    accuracy|||<a name="w2vecnndp_acc">0.92</a>|      7321|
+|   macro avg|       0.91|      0.91|      0.91|      7321|
+|weighted avg|       0.92|      0.92|      0.92|      7321|
 
-    accuracy    <a name="w2vecnndp_acc">0.92</a>   0.92      7321
-   macro avg       0.91      0.91      0.91      7321
-weighted avg       0.92      0.92      0.92      7321
-
-[[1857   10   55   10   52   68    2    3]
- [   2  166    1    0   13    0    2    1]
- [  26    0  313    0   21    0    0    0]
- [  54    0    0  645    8   27    0    0]
- [  85   20    8    9  441    1    0    0]
- [  54    1    0    2   17 2837    1    0]
- [   2    0    0    0    0    0  405    0]
- [   0    0    0    0    0    0    0  102]]
+|CONFUSION MATRIX|UNKNOWN|address|company_name|date|description|number|tel_fax|zipcode|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|     UNKNOWN|1857|   10|   55|   10|   52|   68|    2|    3|
+|     address|   2|  166|    1|    0|   13|    0|    2|    1|
+|company_name|  26|    0|  313|    0|   21|    0|    0|    0|
+|        date|  54|    0|    0|  645|    8|   27|    0|    0|
+| description|  85|   20|    8|    9|  441|    1|    0|    0|
+|      number|  54|    1|    0|    2|   17| 2837|    1|    0|
+|     tel_fax|   2|    0|    0|    0|    0|    0|  405|    0|
+|     zipcode|   0|    0|    0|    0|    0|    0|    0|  102|
 
 ### BERT CNN 
-              precision    recall  f1-score   support
+|ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
+|:--|:-:|:-:|:-:|:-:|
+|UNKNOWN|            0.87|      0.87|      0.87|      2057|
+|     address|       0.82|      0.91|      0.87|       185|
+|company_name|       0.86|      0.80|      0.83|       360|
+|        date|       0.97|      0.90|      0.93|       734|
+| description|       0.70|      0.67|      0.68|       564|
+|      number|       0.95|      0.98|      0.96|      2912|
+|     tel_fax|       0.99|      0.98|      0.98|       407|
+|     zipcode|       0.94|      1.00|      0.97|       102|
+|    accuracy|||<a name="bertcnndp_acc">0.91</a>|      7321|
+|   macro avg|       0.89|      0.89|      0.89|      7321|
+|weighted avg|       0.91|      0.91|      0.91|      7321|
 
-                   0.87      0.87      0.87      2057
-     address       0.82      0.91      0.87       185
-company_name       0.86      0.80      0.83       360
-        date       0.97      0.90      0.93       734
- description       0.70      0.67      0.68       564
-      number       0.95      0.98      0.96      2912
-     tel_fax       0.99      0.98      0.98       407
-     zipcode       0.94      1.00      0.97       102
-
-    accuracy    <a name="bertcnndp_acc">0.91</a>     0.91      7321
-   macro avg       0.89      0.89      0.89      7321
-weighted avg       0.91      0.91      0.91      7321
-
-[[1784   16   42    5  100  101    3    6]
- [   5  169    0    1   10    0    0    0]
- [  44    4  288    1   22    1    0    0]
- [  27    2    0  657    5   43    0    0]
- [ 152   12    5   11  379    4    0    1]
- [  30    2    0    0   25 2852    3    0]
- [   3    0    0    0    2    2  400    0]
- [   0    0    0    0    0    0    0  102]]
+|CONFUSION MATRIX|UNKNOWN|address|company_name|date|description|number|tel_fax|zipcode|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|     UNKNOWN|1784|   16|   42|    5|  100|  101|    3|    6|
+|     address|   5|  169|    0|    1|   10|    0|    0|    0|
+|company_name|  44|    4|  288|    1|   22|    1|    0|    0|
+|        date|  27|    2|    0|  657|    5|   43|    0|    0|
+| description| 152|   12|    5|   11|  379|    4|    0|    1|
+|      number|  30|    2|    0|    0|   25| 2852|    3|    0|
+|     tel_fax|   3|    0|    0|    0|    2|    2|  400|    0|
+|     zipcode|   0|    0|    0|    0|    0|    0|    0|  102|
 
 ##### Dataset: Invoice - Bourbon - Sompo holdings
 ##### Mapping with Jane category definition
@@ -416,9 +420,15 @@ weighted avg       0.90      0.88      0.88     10532
 |CLASS|-"name" <br> - "date" <br> - "type" <br> - "quantity" <br> - "amount" <br> - "tel" <br> - "zipcode" <br> - "address" <br> - "unit" <br> - "number"|
 
 <p>
-    <img src="demo.png" alt="【TIS様】Pitch Tokyo請求書 (Aniwo)_0"/>
+    <img src="fig/demo_invoice_1.png" alt="【TIS様】Pitch Tokyo請求書 (Aniwo)_0"/>
     <br>
-    <em>Fig. 1: Visualiztion of NLP approaches in Invoice data sample </em>
+    <em>Fig. 1: Visualiztion of NLP approaches - simplfied category in Invoice data sample </em>
+</p>
+
+<p>
+    <img src="fig/demo_invoice_2.png" alt="【TIS様】Pitch Tokyo請求書 (Aniwo)_0"/>
+    <br>
+    <em>Fig. 2: Visualiztion of NLP approaches - full category in Invoice data sample </em>
 </p>
 
 <p>

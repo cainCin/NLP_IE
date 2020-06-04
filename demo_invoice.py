@@ -65,10 +65,10 @@ def process_image(image_path, flax_path, enc, classifier, label_path=None):
 
 if __name__ == "__main__":
     
-    #test_image = r"【請求書】旅行者向けIoT実証実験（WatchPhone）_201709_0"
-    #image_path = r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\test\images\{}.jpg".format(test_image)
-    #label_path = r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\test\labels\{}.json".format(test_image)
-    #flax_path = r"D:\Workspace\cinnamon\code\prj\invoice\200227\debug_outputs\{}\1\kv_input.json".format(test_image)
+    test_image = r"【請求書】旅行者向けIoT実証実験（WatchPhone）_201709_0"
+    image_path = r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\test\images\{}.jpg".format(test_image)
+    label_path = r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\test\labels\{}.json".format(test_image)
+    flax_path = r"D:\Workspace\cinnamon\code\prj\invoice\200227\debug_outputs\{}\1\kv_input.json".format(test_image)
     
     
     # daiichi
@@ -78,9 +78,9 @@ if __name__ == "__main__":
     
     
     # sumitoma
-    image_path = r"D:\Workspace\cinnamon\data\sumimota\images\2018030500875_558404_04_20180305l0015000550_1.png"
-    label_path = r"D:\Workspace\cinnamon\data\sumimota\labels\2018030500875_558404_04_20180305l0015000550_1.json"
-    flax_path = r"D:\Workspace\cinnamon\code\dev\sumimota\2018030500875_558404_04_20180305l0015000550_1.la_ocr.json"
+    #image_path = r"D:\Workspace\cinnamon\data\sumimota\images\2018030500875_558404_04_20180305l0015000550_1.png"
+    #label_path = r"D:\Workspace\cinnamon\data\sumimota\labels\2018030500875_558404_04_20180305l0015000550_1.json"
+    #flax_path = r"D:\Workspace\cinnamon\code\dev\sumimota\2018030500875_558404_04_20180305l0015000550_1.la_ocr.json"
 
     # MYL
     #image_path = r"D:\Workspace\cinnamon\data\myl\images\img00060003.jpg.0.Blacken.jpg"
@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
     # load model
     enc = load_enc()
-    classifier = load_model("cain_mapping_cain_dpw2vSVM.sav")
+    classifier = load_model("invoice_mapping_cain_dpw2vSVM.sav")
     print(classifier.model.classes_)
     process_image(image_path, flax_path, enc=enc, classifier=classifier, label_path=label_path)
     pass
