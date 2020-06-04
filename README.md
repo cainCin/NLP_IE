@@ -19,6 +19,7 @@
 |Classifier| SVM, CNN|
 
 ## <a name="benchmark"> Benchmark </a>
+
 |Encoder + Classifier\ Infos | Embedding size| Invoice| Invoice - datapile|
 |:--------|:--:|:-:|:-:|:-:|:-:|
 |[Baseline (BoW + SVM)](#bowsvm)|476| [0.51](#bowsvm_acc) |[0.60](#bowsvmdp_acc)|
