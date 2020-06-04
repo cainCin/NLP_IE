@@ -19,12 +19,12 @@
 |Classifier| SVM, CNN|
 
 ## <a name="benchmark"> Benchmark </a>
-|Encoder + Classifier\ Infos | Invoice |Embedding size|Inference Speed|
-|:--------|:--:|:-:|:-:|
-|[Baseline (BoW + SVM)](#bowsvm)| [0.51](#bowsvm_acc) |476||
-| [Word2Vec + SVM](#w2vsvm)| [0.93](#w2vsvm_acc) |100||
-| [FastText + SVM](#ftsvm)| [0.94](#ftsvm_acc) |300||
-| [BERT + SVM](#bertsvm)| [0.95](#bertsvm_acc) |768||
+|Encoder + Classifier\ Infos | Embedding size| Invoice <br> ACC - SPEED | Invoice - datapile <br> ACC - SPEED |
+|:--------|:--:|:-:|:-:|:-:|:-:|
+|[Baseline (BoW + SVM)](#bowsvm)|476| [0.51](#bowsvm_acc) |[0.60](#bowsvmdp_acc)|
+| [Word2Vec + SVM](#w2vsvm)|100| [0.93](#w2vsvm_acc) |[0.51](#w2vsvmdp_acc)|
+| [FastText + SVM](#ftsvm)|300| [0.94](#ftsvm_acc) |[0.51](#ftsvmdp_acc)|
+| [BERT + SVM](#bertsvm)|768| [0.95](#bertsvm_acc) |[0.51](#bertsvmdp_acc)|
 
 
 # EXPERIMENTS
@@ -203,7 +203,7 @@ TABLE: MAPPING FROM FORMAL KEYS INTO CATEGORIES
 |      number|       1.00|      0.32|      0.49|      2912|
 |     tel_fax|       0.86|      0.61|      0.71|       407|
 |     zipcode|       1.00|      0.82|      0.90|       102|
-|    accuracy|||                           0.60|      7321|
+|    accuracy|||    <a name="bowsvmdp_acc">0.60</a>|      7321|
 |   macro avg|       0.83|      0.65|      0.67|      7321|
 |weighted avg|       0.79|      0.60|      0.58|      7321|
 
@@ -230,44 +230,48 @@ TABLE: MAPPING FROM FORMAL KEYS INTO CATEGORIES
 |      number|       0.95|      0.91|      0.93|      2912|
 |     tel_fax|       0.84|      0.99|      0.91|       407|
 |     zipcode|       0.97|      0.95|      0.96|       102|
-|    accuracy|||                           0.88|      7321|
+|    accuracy|||    <a name="w2vsvmdp_acc">0.88</a>|      7321|
 |   macro avg|       0.86|      0.91|      0.88|      7321|
 |weighted avg|       0.89|      0.88|      0.89|      7321|
 
-[[1647   21   59    1  194  104   28    3]
- [   1  175    0    0    9    0    0    0]
- [   4    0  331    0   25    0    0    0]
- [  61    0    0  650   11   12    0    0]
- [  17   13    3    4  507   18    2    0]
- [ 158    9    0   15   31 2657   42    0]
- [   0    0    0    0    1    3  403    0]
- [   0    0    0    0    0    0    5   97]]
+
+|CONFUSION MATRIX|UNKNOWN|address|company_name|date|description|number|tel_fax|zipcode|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|     UNKNOWN|1647|   21|   59|    1|  194|  104|   28|    3|
+|     address|   1|  175|    0|    0|    9|    0|    0|    0|
+|company_name|   4|    0|  331|    0|   25|    0|    0|    0|
+|        date|  61|    0|    0|  650|   11|   12|    0|    0|
+| description|  17|   13|    3|    4|  507|   18|    2|    0|
+|      number| 158|    9|    0|   15|   31| 2657|   42|    0|
+|     tel_fax|   0|    0|    0|    0|    1|    3|  403|    0|
+|     zipcode|   0|    0|    0|    0|    0|    0|    5|   97|
 
 
 ### FastText SVM
-              precision    recall  f1-score   support
+|ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
+|:--|:-:|:-:|:-:|:-:|
+||                   0.86|      0.69|      0.77|      2057|
+|     address|       0.90|      0.69|      0.78|       185|
+|company_name|       0.87|      0.76|      0.81|       360|
+|        date|       0.97|      0.88|      0.92|       734|
+| description|       0.43|      0.93|      0.59|       564|
+|      number|       0.95|      0.91|      0.93|      2912|
+|     tel_fax|       0.90|      0.98|      0.94|       407|
+|     zipcode|       0.90|      0.96|      0.93|       102|
+|    accuracy||| <a name="ftsvmdp_acc">0.84</a>|      7321|
+|   macro avg|       0.85|      0.85|      0.83|      7321|
+|weighted avg|       0.88|      0.84|      0.85|      7321|
 
-                   0.86      0.69      0.77      2057
-     address       0.90      0.69      0.78       185
-company_name       0.87      0.76      0.81       360
-        date       0.97      0.88      0.92       734
- description       0.43      0.93      0.59       564
-      number       0.95      0.91      0.93      2912
-     tel_fax       0.90      0.98      0.94       407
-     zipcode       0.90      0.96      0.93       102
-
-    accuracy                           0.84      7321
-   macro avg       0.85      0.85      0.83      7321
-weighted avg       0.88      0.84      0.85      7321
-
-[[1427    8   38    1  453  101   19   10]
- [   0  127    1    0   57    0    0    0]
- [   3    0  272    0   85    0    0    0]
- [  58    1    0  643   20   12    0    0]
- [  10    5    2    3  525   17    2    0]
- [ 158    0    0   14   67 2656   17    0]
- [   0    0    0    0    3    3  400    1]
- [   0    0    0    0    0    0    4   98]]
+|CONFUSION MATRIX|UNKNOWN|address|company_name|date|description|number|tel_fax|zipcode|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|     UNKNOWN|1427|    8|   38|    1|  453|  101|   19|   10|
+|     address|   0|  127|    1|    0|   57|    0|    0|    0|
+|company_name|   3|    0|  272|    0|   85|    0|    0|    0|
+|        date|  58|    1|    0|  643|   20|   12|    0|    0|
+| description|  10|    5|    2|    3|  525|   17|    2|    0|
+|      number| 158|    0|    0|   14|   67| 2656|   17|    0|
+|     tel_fax|   0|    0|    0|    0|    3|    3|  400|    1|
+|     zipcode|   0|    0|    0|    0|    0|    0|    4|   98|
 
 ### BERTSVM
               precision    recall  f1-score   support
@@ -281,18 +285,20 @@ company_name       0.83      0.92      0.87       360
      tel_fax       0.98      0.99      0.98       407
      zipcode       0.97      1.00      0.99       102
 
-    accuracy                           0.91      7321
+    accuracy   <a name="bertsvmdp_acc">0.91</a>   0.91      7321
    macro avg       0.91      0.91      0.91      7321
 weighted avg       0.91      0.91      0.91      7321
 
-[[1754    5   64    0   87  137    7    3]
- [   5  172    0    0    8    0    0    0]
- [  14    2  331    0   13    0    0    0]
- [   0    0    0  645   13   76    0    0]
- [ 141    8    4    0  395   16    0    0]
- [   8    0    0    0   22 2881    1    0]
- [   2    0    0    0    4    0  401    0]
- [   0    0    0    0    0    0    0  102]]
+|CONFUSION MATRIX|UNKNOWN|address|company_name|date|description|number|tel_fax|zipcode|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|     UNKNOWN|1754|    5|   64|    0|   87|  137|    7|    3|
+|     address|   5|  172|    0|    0|    8|    0|    0|    0|
+|company_name|  14|    2|  331|    0|   13|    0|    0|    0|
+|        date|   0|    0|    0|  645|   13|   76|    0|    0|
+| description| 141|    8|    4|    0|  395|   16|    0|    0|
+|      number|   8|    0|    0|    0|   22| 2881|    1|    0|
+|     tel_fax|   2|    0|    0|    0|    4|    0|  401|    0|
+|     zipcode|   0|    0|    0|    0|    0|    0|    0|  102|
 
 
 ### W2VCNN
@@ -307,7 +313,7 @@ company_name       0.84      0.83      0.83       360
      tel_fax       0.98      0.99      0.99       407
      zipcode       0.95      0.99      0.97       102
 
-    accuracy                           0.91      7321
+    accuracy <a name="w2vcnndp_acc">0.91</a>  0.91      7321
    macro avg       0.91      0.90      0.90      7321
 weighted avg       0.91      0.91      0.91      7321
 
@@ -330,7 +336,7 @@ company_name       0.83      0.87      0.85       360
      tel_fax       0.99      1.00      0.99       407
      zipcode       0.96      1.00      0.98       102
 
-    accuracy                           0.92      7321
+    accuracy    <a name="w2vecnndp_acc">0.92</a>   0.92      7321
    macro avg       0.91      0.91      0.91      7321
 weighted avg       0.92      0.92      0.92      7321
 
@@ -355,7 +361,7 @@ company_name       0.86      0.80      0.83       360
      tel_fax       0.99      0.98      0.98       407
      zipcode       0.94      1.00      0.97       102
 
-    accuracy                           0.91      7321
+    accuracy    <a name="bertcnndp_acc">0.91</a>     0.91      7321
    macro avg       0.89      0.89      0.89      7321
 weighted avg       0.91      0.91      0.91      7321
 
