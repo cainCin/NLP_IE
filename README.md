@@ -25,7 +25,9 @@
 |[Baseline (BoW + SVM)](#bowsvm)|476| [0.51](#bowsvm_acc) |[0.60](#bowsvmdp_acc)|
 | [Word2Vec + SVM](#w2vsvm)|100| [0.93](#w2vsvm_acc) |[0.88](#w2vsvmdp_acc)|
 | [FastText + SVM](#ftsvm)|300| [0.94](#ftsvm_acc) |[0.84](#ftsvmdp_acc)|
-| [BERT + SVM](#bertsvm)|768| [0.95](#bertsvm_acc) |[0.91](#bertsvmdp_acc)|
+| [BERT + SVM](#bertsvm)|768| [0.95](#bertsvm_acc) |[0.91](#bertsvmdp_acc)| \hline
+| [Word2Vec + CNN](#bertsvm)|768| [-](#bertsvm_acc) |[0.92](#w2vecnndp_acc)|
+| [BERT + CNN](#bertsvm)|768| [-](#bertcnndp_acc) |[0.91](#bertsvmdp_acc)|
 
 
 # EXPERIMENTS
