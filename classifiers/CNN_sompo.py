@@ -14,7 +14,7 @@ ENC = W2VEncoder(weight_paths=r"D:\Workspace\cinnamon\code\github\NLP_IE\jawiki_
 encode_length = 100
 _default = {
     "lr": 1e-4,
-    "weight_path": "W2VCNN_test_1e4.pt",
+    "weight_path": "W2VCNN_test_1e4_sompo_v6.pt",
 }
 
 nbf = encode_length
@@ -24,7 +24,7 @@ for i in range(6):
     nbf = nbf // 2
     nbl = nbl // 2
 
-max_epoch = 300
+max_epoch = 200
 
 
 #from encoders.BERTEncoder import BERTEncoder
@@ -39,22 +39,22 @@ max_epoch = 300
 
 def transform(text, encode_engine=ENC, max_length=max_length):
     out = torch.zeros(size=(1, max_length, encode_length))
-    enc = torch.Tensor(encode_engine.encode(text)).view(1, -1, encode_length)
-    out[:, :enc.shape[1],:] = enc
+    try:
+        enc = torch.Tensor(encode_engine.encode(text)).view(1, -1, encode_length)
+        out[:, :enc.shape[1],:] = enc
+    except:
+        return out
     return out
 
-category = ['', 'address', 'company_name', 'date', 'description', 'number', 'tel_fax', 'zipcode']
+#category = ['', 'address', 'company_name', 'date', 'description', 'number', 'tel_fax', 'zipcode']
+category = ['', 'amount', 'branch_name', 'company_name', 'date', 'key_amount', 'key_branch_name', 'key_date', 'key_mix', 'key_person_name', 'key_ratio', 'key_score', 'key_status', 'person_name', 'ratio', 'score', 'status']
 def target_transform(label, category=category):
     out = torch.zeros(size=(len(category), ))
     if len(label) == 0: #UNKNOWN
         out[0] = 1.
         return out
-
-    for i, cat in enumerate(category):
-        if i == 0: continue
-        if cat in label:
-            out[i] = 1.
-
+    idx = category.index(label)
+    out[idx] = 1.
     return out
 
 class Net(nn.Module):
@@ -112,26 +112,14 @@ def val(model, dataloader, is_train=False, device=torch.device("cpu")):
 
     return (acc * 1. / nbs)
 
-def train(net, project_train, project_test, transform=None, target_transform=None, device=torch.device("cpu"), config=_default, only=["value"]):
+def train(net, trainloader, testloader, device=torch.device("cpu"), config=_default):
     # displaying configuration
     print("TRAINING CONFIG:")
     for key, value in config.items(): print(f"{key}: {value}")
 
-    trainset = TextDataset(labels_path=project_train, only=only, 
-                            transform=transform, 
-                            target_transform=target_transform)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=32,
-                                            shuffle=True, num_workers=1)
 
-    testset = TextDataset(labels_path=project_test, only=only, 
-                            transform=transform, 
-                            target_transform=target_transform)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=32,
-                                            shuffle=False, num_workers=1)
-
-
-    #net = Net(nClass=len(category))
-    #net = net.cuda()
+    #net = Net(nClass=len(trainset.category))
+    #net = net.to(device)
     
     criterion = nn.BCELoss()
     optimizer = optim.Adam(net.parameters(), lr=config.get('lr'))# SGD(net.parameters(), lr=0.001, momentum=0.9)
@@ -181,31 +169,50 @@ def train(net, project_train, project_test, transform=None, target_transform=Non
             print("WEIGHT STORING ...")
 
 if __name__ == "__main__":
-    from utilities.mapping import mapping_list
+    from utilities.mapping_sompo import mapping_list
     from sklearn.metrics import classification_report, confusion_matrix
     import os
 
     # set up dataloader
     project_train = [
         {
-            "name": "invoice",
-            "label_path": r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\train\labels",
-            "mapping_func": mapping_list["invoice"],
+            "name": "sompo_holdings",
+            "label_path": r"D:\Workspace\cinnamon\data\sompo_holdings\train\labels",
+            "mapping_func": mapping_list["sompo_holdings"],
         }
     ]
     project_test = [
         {
-            "name": "invoice",
-            "label_path": r"D:\Workspace\cinnamon\data\invoice\Phase 3.5\test\labels",
-            "mapping_func": mapping_list["invoice"],
+            "name": "sompo_holdings",
+            "label_path": r"D:\Workspace\cinnamon\data\sompo_holdings\val\labels",
+            "mapping_func": mapping_list["sompo_holdings"],
         }
     ]
 
+    only = None
     
 
-    net = Net(nClass=len(category))
+    trainset = TextDataset(labels_path=project_train, only=only, 
+                            transform=transform, 
+                            target_transform=target_transform,
+                            unknown_drop_rate=0.2)
+    
+    
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=16,
+                                            shuffle=True, num_workers=1)
+    
+    testset = TextDataset(labels_path=project_test, only=only, 
+                            transform=transform, 
+                            target_transform=target_transform,
+                            unknown_drop_rate=0.)
+    testloader = torch.utils.data.DataLoader(testset, batch_size=32,
+                                            shuffle=False, num_workers=1)
+
+    print("====> CLASS: ", trainset.category)
+    net = Net(nClass=len(trainset.category))
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     net = net.to(device)
+    
 
     # load checkpoint
     if os.path.isfile(_default.get('weight_path')):
@@ -216,12 +223,12 @@ if __name__ == "__main__":
         print("FROM SCRATCH=====================")
 
     #train(net, project_train, project_test, device=device)
-    train(net, project_train, project_test, transform=transform, target_transform=target_transform, device=device, config=_default, only=["value"])
+    train(net, trainloader, testloader, device=device, config=_default)
     # load checkpoint
     #net.load_state_dict(torch.load(_default.get('weight_path')))
     #net.eval()
     #print(f"Load {_default.get('weight_path')}...")
-    testset = TextDataset(labels_path=project_test, only=["value"], 
+    testset = TextDataset(labels_path=project_test, only=only, 
                             transform=transform)
     with torch.no_grad():
         y_test = []
@@ -235,7 +242,7 @@ if __name__ == "__main__":
     
     print(classification_report(y_test, y_pred))
     print(confusion_matrix(y_test, y_pred))
-
+    
         
         
 

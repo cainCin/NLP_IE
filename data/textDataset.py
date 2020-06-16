@@ -1,5 +1,7 @@
 from .baseDataset import BaseDataset
 import numpy as np
+import random
+import re
 
 class TextDataset(BaseDataset):
     """
@@ -31,6 +33,19 @@ class TextDataset(BaseDataset):
                                 new_type = ''
                             elif len(new_type) > 0:
                                 new_type = _key_type + "_" + new_type
+                        if new_type == '': # configure for sompo
+                            #print("SOMPO CONFIG==============")
+                            if any([c in _text for c in '令和年月日円点']):
+                                continue
+                            
+                            if False: # re.sub(r"[\s,.]", "", _text).isdigit():
+                                new_type = 'number'
+                                _key_type = 'value'
+                                print("New Class==============")
+
+                            if random.uniform(0, 1) > (1-self.unknown_drop_rate):  # only take 20% of unknown class <== sompo
+                                continue
+
 
                     except:
                         mapped_data.append((_text, '', _key_type, label_path))

@@ -14,7 +14,7 @@ ENC = W2VEncoder(weight_paths=r"D:\Workspace\cinnamon\code\github\NLP_IE\jawiki_
 encode_length = 100
 _default = {
     "lr": 1e-4,
-    "weight_path": "W2VCNN_test_1e4.pt",
+    "weight_path": "W2VCNN_test_1e4_draft.pt",
 }
 
 nbf = encode_length
@@ -43,18 +43,15 @@ def transform(text, encode_engine=ENC, max_length=max_length):
     out[:, :enc.shape[1],:] = enc
     return out
 
-category = ['', 'address', 'company_name', 'date', 'description', 'number', 'tel_fax', 'zipcode']
+#category = ['', 'address', 'company_name', 'date', 'description', 'number', 'tel_fax', 'zipcode']
+category = ['', 'address', 'company_name', 'date', 'description', 'key_date', 'key_description', 'key_number', 'key_tel_fax', 'number', 'tel_fax', 'zipcode']
 def target_transform(label, category=category):
     out = torch.zeros(size=(len(category), ))
     if len(label) == 0: #UNKNOWN
         out[0] = 1.
         return out
-
-    for i, cat in enumerate(category):
-        if i == 0: continue
-        if cat in label:
-            out[i] = 1.
-
+    idx = category.index(label)
+    out[idx] = 1.
     return out
 
 class Net(nn.Module):
@@ -112,26 +109,14 @@ def val(model, dataloader, is_train=False, device=torch.device("cpu")):
 
     return (acc * 1. / nbs)
 
-def train(net, project_train, project_test, transform=None, target_transform=None, device=torch.device("cpu"), config=_default, only=["value"]):
+def train(net, trainloader, testloader, device=torch.device("cpu"), config=_default):
     # displaying configuration
     print("TRAINING CONFIG:")
     for key, value in config.items(): print(f"{key}: {value}")
 
-    trainset = TextDataset(labels_path=project_train, only=only, 
-                            transform=transform, 
-                            target_transform=target_transform)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=32,
-                                            shuffle=True, num_workers=1)
 
-    testset = TextDataset(labels_path=project_test, only=only, 
-                            transform=transform, 
-                            target_transform=target_transform)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=32,
-                                            shuffle=False, num_workers=1)
-
-
-    #net = Net(nClass=len(category))
-    #net = net.cuda()
+    #net = Net(nClass=len(trainset.category))
+    #net = net.to(device)
     
     criterion = nn.BCELoss()
     optimizer = optim.Adam(net.parameters(), lr=config.get('lr'))# SGD(net.parameters(), lr=0.001, momentum=0.9)
@@ -201,9 +186,25 @@ if __name__ == "__main__":
         }
     ]
 
+    only = ["key", "value"]
     
 
-    net = Net(nClass=len(category))
+    trainset = TextDataset(labels_path=project_train, only=only, 
+                            transform=transform, 
+                            target_transform=target_transform)
+    
+    
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=16,
+                                            shuffle=True, num_workers=1)
+    
+    testset = TextDataset(labels_path=project_test, only=only, 
+                            transform=transform, 
+                            target_transform=target_transform)
+    testloader = torch.utils.data.DataLoader(testset, batch_size=32,
+                                            shuffle=False, num_workers=1)
+
+    print("====> CLASS: ", trainset.category)
+    net = Net(nClass=len(trainset.category))
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     net = net.to(device)
 
@@ -216,12 +217,12 @@ if __name__ == "__main__":
         print("FROM SCRATCH=====================")
 
     #train(net, project_train, project_test, device=device)
-    train(net, project_train, project_test, transform=transform, target_transform=target_transform, device=device, config=_default, only=["value"])
+    train(net, trainloader, testloader, device=device, config=_default)
     # load checkpoint
     #net.load_state_dict(torch.load(_default.get('weight_path')))
     #net.eval()
     #print(f"Load {_default.get('weight_path')}...")
-    testset = TextDataset(labels_path=project_test, only=["value"], 
+    testset = TextDataset(labels_path=project_test, only=only, 
                             transform=transform)
     with torch.no_grad():
         y_test = []
@@ -235,7 +236,7 @@ if __name__ == "__main__":
     
     print(classification_report(y_test, y_pred))
     print(confusion_matrix(y_test, y_pred))
-
+    
         
         
 

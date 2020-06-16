@@ -7,7 +7,7 @@ import torch
 class BaseDataset(Dataset):
     """Text dataset from json"""
 
-    def __init__(self, labels_path, category=None, transform=None, target_transform=None, only=["key", "value"]):
+    def __init__(self, labels_path, category=None, transform=None, target_transform=None, only=["key", "value"], unknown_drop_rate=0.):
         """
         Args:
             csv_file (string): Path to the csv file with annotations.
@@ -17,10 +17,12 @@ class BaseDataset(Dataset):
         """
         
         self.only = only
+        self.unknown_drop_rate = unknown_drop_rate
         self.data, self.category = self.load_data(labels_path, category)
         
         self.transform = transform
         self.target_transform = target_transform
+        
     
     def fetch_data(self, labels_path, category=None):
         list_label = glob.glob(labels_path + "/*")
