@@ -383,34 +383,60 @@ TABLE: MAPPING FROM FORMAL KEYS INTO CATEGORIES
 
 ##### Dataset: Invoice - Bourbon - Sompo holdings
 ##### Mapping with Jane category definition
+|ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
+|:--|:-:|:-:|:-:|:-:|
+|UNKNOWN|            0.97|      0.72|      0.83|      2878|
+|     address|       0.83|      0.95|      0.88|       185|
+|company_name|       0.85|      0.94|      0.89|       465|
+|        date|       0.94|      0.92|      0.93|      1061|
+| description|       0.58|      0.88|      0.70|       564|
+|      number|       0.91|      0.96|      0.93|      5042|
+| person_name|       0.74|      0.90|      0.81|        96|
+|     tel_fax|       0.79|      0.99|      0.88|       407|
+|     zipcode|       0.94|      0.95|      0.95|       102|
+|    accuracy|||                           0.89|     10800|
+|   macro avg|       0.84|      0.91|      0.87|     10800|
+|weighted avg|       0.90|      0.89|      0.89|     10800|
+
+|CONFUSION MATRIX|UNKNOWN|address|company_name|date|description|number|person_name|tel_fax|zipcode|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|     UNKNOWN|2062|   26|   76|   16|  233|  404|    3|   55|    3|
+|     address|   0|  175|    0|    0|   10|    0|    0|    0|    0|
+|company_name|   4|    1|  437|    0|   23|    0|    0|    0|    0|
+|       date|   2|    0|    0|  981|   12|   66|    0|    0|    0|
+|description|   8|    8|    2|    3|  498|   22|   20|    3|    0|
+|     number|  42|    2|    0|   41|   72| 4832|    8|   42|    3|
+|person_name|   2|    0|    2|    1|    5|    0|   86|    0|    0|
+|    tel_fax|   0|    0|    0|    0|    2|    3|    0|  402|    0|
+|    zipcode|   0|    0|    0|    0|    0|    0|    0|    5|   97|
 
 
+### W2VeCNN
               precision    recall  f1-score   support
 
-                   0.96      0.72      0.82      2778
-     address       0.78      0.95      0.85       185
-company_name       0.84      0.92      0.88       465
-        date       0.94      0.92      0.93      1057
- description       0.57      0.90      0.70       564
-      number       0.91      0.95      0.93      4878
- person_name       0.88      0.76      0.82        96
-     tel_fax       0.79      0.99      0.88       407
-     zipcode       0.94      0.95      0.95       102
+                   0.89      0.92      0.90      2878
+     address       0.91      0.79      0.85       185
+company_name       0.84      0.79      0.81       465
+        date       0.98      0.91      0.94      1061
+ description       0.72      0.71      0.71       564
+      number       0.98      0.98      0.98      5042
+ person_name       0.68      0.77      0.72        96
+     tel_fax       0.99      0.97      0.98       407
+     zipcode       0.97      0.99      0.98       102
 
-    accuracy                           0.88     10532
-   macro avg       0.85      0.90      0.86     10532
-weighted avg       0.90      0.88      0.88     10532
+    accuracy                           0.93     10800
+   macro avg       0.88      0.87      0.88     10800
+weighted avg       0.93      0.93      0.93     10800
 
-[[1998   26   79   18  241  354    1   58    3]
- [   0  175    0    0   10    0    0    0    0]
- [   4    1  428    0   32    0    0    0    0]
- [   1    0    0  974   13   69    0    0    0]
- [   9    9    3    3  506   22    9    3    0]
- [  51   10    0   45   77 4653    0   39    3]
- [   8    4    2    0    9    0   73    0    0]
- [   0    0    0    0    1    3    0  403    0]
- [   0    0    0    0    0    0    0    5   97]]
-
+[[2643    4   40    8   77   86   16    2    2]
+ [  19  147    2    1   16    0    0    0    0]
+ [  77    2  368    0   17    0    1    0    0]
+ [  56    0    0  967   14   24    0    0    0]
+ [  98    9   30    7  398    3   18    0    1]
+ [  69    0    0    3   19 4951    0    0    0]
+ [  21    0    0    0    0    1   74    0    0]
+ [   1    0    0    0   11    0    0  395    0]
+ [   0    0    0    0    0    0    0    1  101]]
 
 
 

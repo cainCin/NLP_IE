@@ -21,6 +21,7 @@ class TextDataset(BaseDataset):
                 # fetch data
                 fetched_data = self.fetch_data(project_path.get('label_path'), category=key_list)
 
+
                 # mapping
                 # mapped_data = [(_text, project_path.get("mapping_func")[_type], _key_type) for _text, _type, _key_type, label_path in fetched_data]
                 mapped_data = []
@@ -33,7 +34,7 @@ class TextDataset(BaseDataset):
                                 new_type = ''
                             elif len(new_type) > 0:
                                 new_type = _key_type + "_" + new_type
-                        if new_type == '': # configure for sompo
+                        if False: #new_type == '': # configure for sompo
                             #print("SOMPO CONFIG==============")
                             if any([c in _text for c in '令和年月日円点']):
                                 continue
@@ -48,10 +49,19 @@ class TextDataset(BaseDataset):
 
 
                     except:
-                        mapped_data.append((_text, '', _key_type, label_path))
-                        print(f"Error in mapping at {label_path}: formal_key {_type} not in the map list")
+                        # TODO: remove stamp from dataset
+                        if "stamp" in _type:
+                            #print(f"Remove mapping at {label_path}: formal_key {_type} is STAMP")
+                            continue
+                        else:
+                            mapped_data.append((_text, '', _key_type, label_path))
+                            print(f"Error in mapping at {label_path}: formal_key {_type} not in the map list")
+
                     else:
-                        mapped_data.append((_text, new_type, _key_type, label_path))
+                        if len(_text) == 0:
+                            print(f"CHECKING {_text, new_type} in {label_path}")
+                        else:
+                            mapped_data.append((_text, new_type, _key_type, label_path))
 
                 
 

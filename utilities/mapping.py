@@ -30,6 +30,7 @@ mapping_list = {
         "total_insurance_burden": "number",
         "insurance_covered_fee": "number",
         "total_insurance_burden_score": "number",
+        "": "",
     },
     "myl":{
         "insurance_point_total": "number",
