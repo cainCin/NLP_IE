@@ -403,40 +403,41 @@ TABLE: MAPPING FROM FORMAL KEYS INTO CATEGORIES
 |     UNKNOWN|2062|   26|   76|   16|  233|  404|    3|   55|    3|
 |     address|   0|  175|    0|    0|   10|    0|    0|    0|    0|
 |company_name|   4|    1|  437|    0|   23|    0|    0|    0|    0|
-|       date|   2|    0|    0|  981|   12|   66|    0|    0|    0|
-|description|   8|    8|    2|    3|  498|   22|   20|    3|    0|
-|     number|  42|    2|    0|   41|   72| 4832|    8|   42|    3|
-|person_name|   2|    0|    2|    1|    5|    0|   86|    0|    0|
-|    tel_fax|   0|    0|    0|    0|    2|    3|    0|  402|    0|
-|    zipcode|   0|    0|    0|    0|    0|    0|    0|    5|   97|
+|        date|   2|    0|    0|  981|   12|   66|    0|    0|    0|
+| description|   8|    8|    2|    3|  498|   22|   20|    3|    0|
+|      number|  42|    2|    0|   41|   72| 4832|    8|   42|    3|
+| person_name|   2|    0|    2|    1|    5|    0|   86|    0|    0|
+|     tel_fax|   0|    0|    0|    0|    2|    3|    0|  402|    0|
+|     zipcode|   0|    0|    0|    0|    0|    0|    0|    5|   97|
 
 
 ### W2VeCNN
-              precision    recall  f1-score   support
+|ACCURACY REPORT (Invoice)|precision|recall|f1-score|support|
+|:--|:-:|:-:|:-:|:-:|
+|UNKNOWN|            0.89|      0.92|      0.90|      2878|
+|     address|       0.91|      0.79|      0.85|       185|
+|company_name|       0.84|      0.79|      0.81|       465|
+|        date|       0.98|      0.91|      0.94|      1061|
+| description|       0.72|      0.71|      0.71|       564|
+|      number|       0.98|      0.98|      0.98|      5042|
+| person_name|       0.68|      0.77|      0.72|        96|
+|     tel_fax|       0.99|      0.97|      0.98|       407|
+|     zipcode|       0.97|      0.99|      0.98|       102|
+|    accuracy|||                           0.93|     10800|
+|   macro avg|       0.88|      0.87|      0.88|     10800|
+|weighted avg|       0.93|      0.93|      0.93|     10800|
 
-                   0.89      0.92      0.90      2878
-     address       0.91      0.79      0.85       185
-company_name       0.84      0.79      0.81       465
-        date       0.98      0.91      0.94      1061
- description       0.72      0.71      0.71       564
-      number       0.98      0.98      0.98      5042
- person_name       0.68      0.77      0.72        96
-     tel_fax       0.99      0.97      0.98       407
-     zipcode       0.97      0.99      0.98       102
-
-    accuracy                           0.93     10800
-   macro avg       0.88      0.87      0.88     10800
-weighted avg       0.93      0.93      0.93     10800
-
-[[2643    4   40    8   77   86   16    2    2]
- [  19  147    2    1   16    0    0    0    0]
- [  77    2  368    0   17    0    1    0    0]
- [  56    0    0  967   14   24    0    0    0]
- [  98    9   30    7  398    3   18    0    1]
- [  69    0    0    3   19 4951    0    0    0]
- [  21    0    0    0    0    1   74    0    0]
- [   1    0    0    0   11    0    0  395    0]
- [   0    0    0    0    0    0    0    1  101]]
+|CONFUSION MATRIX|UNKNOWN|address|company_name|date|description|number|person_name|tel_fax|zipcode|
+|:-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|     UNKNOWN|2643|    4|   40|    8|   77|   86|   16|    2|    2|
+|     address|  19|  147|    2|    1|   16|    0|    0|    0|    0|
+|company_name|  77|    2|  368|    0|   17|    0|    1|    0|    0|
+|        date|  56|    0|    0|  967|   14|   24|    0|    0|    0|
+| description|  98|    9|   30|    7|  398|    3|   18|    0|    1|
+|      number|  69|    0|    0|    3|   19| 4951|    0|    0|    0|
+| person_name|  21|    0|    0|    0|    0|    1|   74|    0|    0|
+|     tel_fax|   1|    0|    0|    0|   11|    0|    0|  395|    0|
+|     zipcode|   0|    0|    0|    0|    0|    0|    0|    1|  101|
 
 
 
